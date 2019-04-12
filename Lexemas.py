@@ -1,11 +1,12 @@
 from enum import Enum, auto
 
+
 class Lexemas(Enum):
     IDENTIFICADOR = auto()
 
     INT    = auto()
     FLOAT  = auto()
-    CHAR   = auto() #ver se realmente precisa
+    CHAR   = auto()  # ver se realmente precisa
     STRUCT = auto()
     IF     = auto()
     ELSE   = auto()
@@ -25,7 +26,7 @@ class Lexemas(Enum):
     OP_SUBTRACAO     = auto()
     OP_MULTIPLICACAO = auto()
     OP_DIVISAO       = auto()
-    
+
     SEP_PONTO           = auto()
     SEP_PONTO_VIRGULA   = auto()
     SEP_ABRE_PARENTESE  = auto()
