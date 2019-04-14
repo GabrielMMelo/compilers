@@ -1,4 +1,3 @@
-from lexical.lexeme import Lexemas
 
 
 class Token:
@@ -11,9 +10,7 @@ class Token:
         self.coluna = coluna
 
     def __str__(self):
-        strTipo = str(self.tipo)
-        strTipo = strTipo.split('.')[1]  # ira ignorar o Lexemas.
         if self.indiceTabelaSimbolo is not None:
-            return "<{}, {}, {}, {}>".format(strTipo, self.indiceTabelaSimbolo, self.linha, self.coluna)
+            return "<{}, {}, {}, {}>".format(self.tipo, self.indiceTabelaSimbolo, self.linha, self.coluna)
         else:
-            return "<{}, {}, {}, {}>".format(strTipo, self.valor, self.linha, self.coluna)
+            return "<{}, '{}', {}, {}>".format(self.tipo, self.valor, self.linha, self.coluna)

@@ -15,5 +15,8 @@ if __name__ == "__main__":
         print("Número inválido de argumentos. Informe o arquivo de entrada")
         sys.exit()
 
-    analisador = AnalisadorLexico()
-    analisador.analisador(arquivo)
+    analisador = AnalisadorLexico(arquivo)
+    analisador.analisar()
+    analisador.imprimir_tokens()
+    analisador.imprimir_tabela_simbolos()
+    analisador.imprimir_erros()

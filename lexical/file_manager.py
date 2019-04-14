@@ -5,7 +5,7 @@ class GerenciarArquivo:
     def __init__(self, arquivo):
         self.arquivo = open(arquivo, "r")
         self.linha = 1
-        self.coluna = 1
+        self.coluna = 0
         self.indice = 0
         self.linha_entrada = self.arquivo.readline()
         self.tamanho_linha = len(self.linha_entrada)
@@ -16,7 +16,7 @@ class GerenciarArquivo:
             if self.linha_entrada:
                 self.tamanho_linha = len(self.linha_entrada)
                 self.linha += 1
-                self.coluna = 1
+                self.coluna = 0
                 self.indice = 0
                 return self.__ler_caracter_aux()
             else:
@@ -24,6 +24,8 @@ class GerenciarArquivo:
         else:
             self.indice += 1
             self.coluna += 1
+            if self.linha_entrada[self.indice - 1] == '\t':
+                self.coluna += 3
             return self.linha_entrada[self.indice - 1]
 
     def __ler_e_pular_comentario(self):
@@ -57,6 +59,10 @@ class GerenciarArquivo:
 
     def ler_caracter(self):
         return self.__ler_e_pular_comentario()
+
+    def voltar_caracter(self):
+        self.coluna -= 1
+        self.indice -= 1
 
     def get_linha(self):
         return self.linha

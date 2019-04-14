@@ -1,36 +1,28 @@
-from enum import Enum, auto
 
 
-class Lexemas(Enum):
-    IDENTIFICADOR = auto()
+class Lexemas():
 
-    INT    = auto()
-    FLOAT  = auto()
-    STRUCT = auto()
-    IF     = auto()
-    ELSE   = auto()
-    WHILE  = auto()
-    VOID   = auto()
-    RETURN = auto()
+    lexema = {
+        '=': 'OP_ATRIBUICAO',
+        '==': 'OP_IGUAL',
+        '>': 'OP_MAIOR',
+        '<': 'OP_MENOR',
+        '>=': 'OP_MAIOR_IGUAL',
+        '<=': 'OP_MENOR_IGUAL',
+        '!=': 'OP_DIFERENTE',
 
-    OP_ATRIBUICAO  = auto()
-    OP_IGUAL       = auto()
-    OP_MAIOR       = auto()
-    OP_MENOR       = auto()
-    OP_MAIOR_IGUAL = auto()
-    OP_MENOR_IGUAL = auto()
-    OP_DIFERENTE   = auto()
+        '+': 'OP_SOMA',
+        '-': 'OP_SUBTRACAO',
+        '*': 'OP_MULTIPLICACAO',
+        '/': 'OP_DIVISAO',
 
-    OP_SOMA          = auto()
-    OP_SUBTRACAO     = auto()
-    OP_MULTIPLICACAO = auto()
-    OP_DIVISAO       = auto()
-
-    SEP_PONTO           = auto()
-    SEP_PONTO_VIRGULA   = auto()
-    SEP_ABRE_PARENTESE  = auto()
-    SEP_FECHA_PARENTESE = auto()
-    SEP_ABRE_CHAVE      = auto()
-    SEP_FECHA_CHAVE     = auto()
-    SEP_ABRE_COLCHETE   = auto()
-    SEP_FECHA_COLCHETE  = auto()
+        ',': 'SEP_VIRGULA', 
+        '.': 'SEP_PONTO', 
+        ';': 'SEP_PONTO_VIRGULA',
+        '(': 'SEP_ABRE_PARENTESE',
+        ')': 'SEP_FECHA_PARENTESE',
+        '{': 'SEP_ABRE_CHAVE',
+        '}': 'SEP_FECHA_CHAVE',
+        '[': 'SEP_ABRE_COLCHETE',
+        ']': 'SEP_FECHA_COLCHETE'
+    }
