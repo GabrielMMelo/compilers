@@ -13,6 +13,7 @@ class AnalisadorLexico:
         self.operadoresRelacionais = ["=", "<=", "<", ">", ">=", "==", "!="]
         self.operadoresContas = ["+", "-", "*", "/"]
         self.separadores = [",", ".", "[", "{", "(", ")", "}", "]", ";"]
+        self.pular = ['\t', '\n', ' ']
         self.letras = "abcdefghijklmnopqrstuvwxyz"
 
     def e_reservada(self, palavra):
