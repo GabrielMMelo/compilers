@@ -6,7 +6,6 @@ class Lexemas(Enum):
 
     INT    = auto()
     FLOAT  = auto()
-    CHAR   = auto()  # ver se realmente precisa
     STRUCT = auto()
     IF     = auto()
     ELSE   = auto()

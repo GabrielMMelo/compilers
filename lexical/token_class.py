@@ -1,4 +1,4 @@
-from Lexemas import Lexemas
+from lexical.lexeme import Lexemas
 
 
 class Token:
