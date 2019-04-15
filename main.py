@@ -1,6 +1,6 @@
 import sys
 import os
-from lexical.lexical_analyzer import AnalisadorLexico
+from lexical.analyzer import AnalisadorLexico
 
 
 if __name__ == "__main__":

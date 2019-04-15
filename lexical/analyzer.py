@@ -1,5 +1,5 @@
 import string
-from lexical.token_class import Token
+from lexical.token import Token
 from lexical.lexeme import Lexemas
 from lexical.symbol_table import TabelaSimbolos
 from lexical.file_manager import GerenciarArquivo
