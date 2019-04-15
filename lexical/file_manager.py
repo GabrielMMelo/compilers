@@ -1,5 +1,3 @@
-
-
 class GerenciarArquivo:
 
     def __init__(self, arquivo):
@@ -30,7 +28,7 @@ class GerenciarArquivo:
 
     def __ler_e_pular_comentario(self):
         caracter_atual = self.__ler_caracter_aux()
-        
+
         if caracter_atual == "/":
             caracter_seguinte = self.__ler_caracter_aux()
             if caracter_seguinte == "*":
@@ -50,7 +48,8 @@ class GerenciarArquivo:
                         else:
                             caracter_atual = caracter_seguinte
                 except UserWarning:
-                    raise EOFError("ERRO: Comentário não fechado! Linha: {}, Coluna: {}".format(linha_inicio_comentario, coluna_inicio_comentario))
+                    raise EOFError("ERRO: Comentário não fechado! Linha: {}, Coluna: {}".
+                                   format(linha_inicio_comentario, coluna_inicio_comentario))
             else:
                 self.coluna -= 1
                 self.indice -= 1

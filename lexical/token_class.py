@@ -1,7 +1,4 @@
-
-
 class Token:
-
     def __init__(self, tipo, valor, linha, coluna, indiceTabelaSimbolo=None):
         self.tipo = tipo
         self.valor = valor
