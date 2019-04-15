@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--Created with JFLAP 6.4.--><structure>
+	<type>fa</type>
+	<automaton>
+		<!--The list of states.-->
+		<state id="0" name="programa">
+			<x>70.0</x>
+			<y>107.0</y>
+			<initial/>
+		</state>
+		<state id="1" name="'">
+			<x>173.0</x>
+			<y>107.0</y>
+		</state>
+		<state id="2" name="'\">
+			<x>272.0</x>
+			<y>111.0</y>
+		</state>
+		<state id="3" name="'\t">
+			<x>391.0</x>
+			<y>110.0</y>
+		</state>
+		<state id="4" name="'\t'">
+			<x>503.0</x>
+			<y>97.0</y>
+		</state>
+		<state id="5" name="t - '\t'">
+			<x>622.0</x>
+			<y>91.0</y>
+			<final/>
+		</state>
+		<state id="6" name="'\n">
+			<x>392.0</x>
+			<y>190.0</y>
+		</state>
+		<state id="7" name="'\n'">
+			<x>502.0</x>
+			<y>204.0</y>
+		</state>
+		<state id="8" name="t - '\n'">
+			<x>625.0</x>
+			<y>209.0</y>
+			<final/>
+		</state>
+		<state id="9" name="' ">
+			<x>253.0</x>
+			<y>285.0</y>
+		</state>
+		<state id="10" name="' '">
+			<x>371.0</x>
+			<y>287.0</y>
+			<final/>
+		</state>
+		<state id="11" name="erro">
+			<x>808.0</x>
+			<y>153.0</y>
+			<final/>
+		</state>
+		<!--The list of transitions.-->
+		<transition>
+			<from>0</from>
+			<to>1</to>
+			<read>'</read>
+		</transition>
+		<transition>
+			<from>1</from>
+			<to>9</to>
+			<read>espaço</read>
+		</transition>
+		<transition>
+			<from>3</from>
+			<to>4</to>
+			<read>'</read>
+		</transition>
+		<transition>
+			<from>9</from>
+			<to>10</to>
+			<read>'</read>
+		</transition>
+		<transition>
+			<from>6</from>
+			<to>11</to>
+			<read>outro</read>
+		</transition>
+		<transition>
+			<from>1</from>
+			<to>2</to>
+			<read>\</read>
+		</transition>
+		<transition>
+			<from>7</from>
+			<to>8</to>
+			<read>outro</read>
+		</transition>
+		<transition>
+			<from>2</from>
+			<to>6</to>
+			<read>n</read>
+		</transition>
+		<transition>
+			<from>2</from>
+			<to>11</to>
+			<controlx>545</controlx>
+			<controly>-19</controly>
+			<read>outro</read>
+		</transition>
+		<transition>
+			<from>1</from>
+			<to>11</to>
+			<controlx>78</controlx>
+			<controly>564</controly>
+			<read>outro</read>
+		</transition>
+		<transition>
+			<from>3</from>
+			<to>11</to>
+			<read>outro</read>
+		</transition>
+		<transition>
+			<from>2</from>
+			<to>3</to>
+			<read>t</read>
+		</transition>
+		<transition>
+			<from>6</from>
+			<to>7</to>
+			<read>'</read>
+		</transition>
+		<transition>
+			<from>4</from>
+			<to>5</to>
+			<read>outro</read>
+		</transition>
+	</automaton>
+</structure>
