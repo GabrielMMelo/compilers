@@ -131,6 +131,9 @@ class AnalisadorLexico:
                         self.tokens.append(Token("FLOAT", cadeia, linha, coluna))
                     else:
                         self.tokens.append(Token("INT", cadeia, linha, coluna))
+                # Separadores
+                elif self.e_separador(caracter_atual):
+                    self.tokens.append(Token("SEPARADOR", caracter_atual,linha, coluna))
 
         except EOFError as e:
             self.erros.append(str(e))
