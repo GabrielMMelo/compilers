@@ -140,7 +140,7 @@ class AnalisadorLexico:
                         self.panic_mode(caracter_atual)
                         self.erros.append("ERRO: formato de constante numérica inválido. Linha: {}, Coluna: {}".
                                           format(linha, coluna))
-                    elif float:
+                    elif float or exponencial:
                         id = self.tabela_simbolos.add(cadeia)
                         self.tokens.append(Token("FLOAT", None, linha, coluna, id))
                     else:
