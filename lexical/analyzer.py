@@ -108,6 +108,8 @@ class AnalisadorLexico:
                     while not caracter_atual == '\n':
                         if self.e_digito(caracter_atual):
                             cadeia += caracter_atual
+                            if exponencial:
+                                cadeia += str(caracter_atual)
                             caracter_atual = self.arquivo.ler_caracter()
                         elif caracter_atual == '.' and not float and not exponencial:  # para evitar que volte ao float
                             caracter_atual = self.arquivo.ler_caracter()
@@ -119,9 +121,14 @@ class AnalisadorLexico:
                                 break
                         elif caracter_atual == 'E' and not exponencial:
                             caracter_atual = self.arquivo.ler_caracter()
-                            if self.e_digito(caracter_atual):
+                            if self.e_digito(caracter_atual) or caracter_atual == '+' or caracter_atual == '-':
                                 cadeia += 'E'
                                 exponencial = True
+                                float = True
+                                if caracter_atual == '+' or caracter_atual == '-':
+                                    linha_op = self.arquivo.get_linha()
+                                    coluna_op = self.arquivo.get_coluna()
+                                    self.tokens.append(Token(Lexemas.lexema[caracter_atual], caracter_atual, linha_op, coluna_op))
                             else:
                                 erro = True
                                 break
@@ -138,27 +145,28 @@ class AnalisadorLexico:
                                           format(linha, coluna))
                     elif exponencial:
                         if float:
-                            self.tokens.append(Token("FLOATEXP", cadeia, linha, coluna))
-                        else:
-                            self.tokens.append(Token("INTEXP", cadeia, linha, coluna))
+                            id = self.tabela_simbolos.add(cadeia)
+                            self.tokens.append(Token("FLOAT", None, linha, coluna, id))
                     elif float:
-                        self.tokens.append(Token("FLOAT", cadeia, linha, coluna))
+                        id = self.tabela_simbolos.add(cadeia)
+                        self.tokens.append(Token("FLOAT", None, linha, coluna, id))
                     else:
-                        self.tokens.append(Token("INT", cadeia, linha, coluna))
+                        id = self.tabela_simbolos.add(cadeia)
+                        self.tokens.append(Token("INT", None, linha, coluna, id))
 
                 # separadores
                 elif self.e_separador(caracter_atual):
-                    self.tokens.append(Token("SEPARADOR", caracter_atual, linha, coluna))
+                    self.tokens.append(Token(Lexemas.lexema[caracter_atual], caracter_atual, linha, coluna))
+
+                elif caracter_atual not in self.pular:
+                    self.panic_mode(caracter_atual)
+                    self.erros.append("ERRO: caractere não suportado pela linguagem. Linha: {}, Coluna: {}".
+                                          format(linha, coluna))
 
         except EOFError as e:
             self.erros.append(str(e))
-            # remover futuramente esses prints de debug
-            print('erro comentario')
-            print(self.erros)
         except UserWarning as e:
-            # acabou o arquivo
-            # remover futuramente esse print de debug
-            print(str(e))
+            pass
 
     def imprimir_tokens(self):
         print("\nTokens (<tipo, valor/id, linha, coluna>):")
