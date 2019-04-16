@@ -108,8 +108,6 @@ class AnalisadorLexico:
                     while not caracter_atual == '\n':
                         if self.e_digito(caracter_atual):
                             cadeia += caracter_atual
-                            if exponencial:
-                                cadeia += str(caracter_atual)
                             caracter_atual = self.arquivo.ler_caracter()
                         elif caracter_atual == '.' and not float and not exponencial:  # para evitar que volte ao float
                             caracter_atual = self.arquivo.ler_caracter()
@@ -124,7 +122,6 @@ class AnalisadorLexico:
                             if self.e_digito(caracter_atual) or caracter_atual == '+' or caracter_atual == '-':
                                 cadeia += 'E'
                                 exponencial = True
-                                float = True
                                 if caracter_atual == '+' or caracter_atual == '-':
                                     linha_op = self.arquivo.get_linha()
                                     coluna_op = self.arquivo.get_coluna()
@@ -143,10 +140,6 @@ class AnalisadorLexico:
                         self.panic_mode(caracter_atual)
                         self.erros.append("ERRO: formato de constante numérica inválido. Linha: {}, Coluna: {}".
                                           format(linha, coluna))
-                    elif exponencial:
-                        if float:
-                            id = self.tabela_simbolos.add(cadeia)
-                            self.tokens.append(Token("FLOAT", None, linha, coluna, id))
                     elif float:
                         id = self.tabela_simbolos.add(cadeia)
                         self.tokens.append(Token("FLOAT", None, linha, coluna, id))
@@ -165,8 +158,9 @@ class AnalisadorLexico:
 
         except EOFError as e:
             self.erros.append(str(e))
+
         except UserWarning as e:
-            pass
+            pass  # final do arquivo
 
     def imprimir_tokens(self):
         print("\nTokens (<tipo, valor/id, linha, coluna>):")
