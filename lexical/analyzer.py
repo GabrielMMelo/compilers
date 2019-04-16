@@ -104,15 +104,24 @@ class AnalisadorLexico:
                 elif self.e_digito(caracter_atual):
                     float = False
                     erro = False
+                    exponencial = False
                     while not caracter_atual == '\n':
                         if self.e_digito(caracter_atual):
                             cadeia += caracter_atual
                             caracter_atual = self.arquivo.ler_caracter()
-                        elif caracter_atual == '.' and not float:
+                        elif caracter_atual == '.' and not float and not exponencial:  # para evitar que volte ao float
                             caracter_atual = self.arquivo.ler_caracter()
                             if self.e_digito(caracter_atual):
                                 cadeia += '.'
                                 float = True
+                            else:
+                                erro = True
+                                break
+                        elif caracter_atual == 'E' and not exponencial:
+                            caracter_atual = self.arquivo.ler_caracter()
+                            if self.e_digito(caracter_atual):
+                                cadeia += 'E'
+                                exponencial = True
                             else:
                                 erro = True
                                 break
@@ -127,13 +136,19 @@ class AnalisadorLexico:
                         self.panic_mode(caracter_atual)
                         self.erros.append("ERRO: formato de constante numérica inválido. Linha: {}, Coluna: {}".
                                           format(linha, coluna))
+                    elif exponencial:
+                        if float:
+                            self.tokens.append(Token("FLOATEXP", cadeia, linha, coluna))
+                        else:
+                            self.tokens.append(Token("INTEXP", cadeia, linha, coluna))
                     elif float:
                         self.tokens.append(Token("FLOAT", cadeia, linha, coluna))
                     else:
                         self.tokens.append(Token("INT", cadeia, linha, coluna))
-                # Separadores
+
+                # separadores
                 elif self.e_separador(caracter_atual):
-                    self.tokens.append(Token("SEPARADOR", caracter_atual,linha, coluna))
+                    self.tokens.append(Token("SEPARADOR", caracter_atual, linha, coluna))
 
         except EOFError as e:
             self.erros.append(str(e))
