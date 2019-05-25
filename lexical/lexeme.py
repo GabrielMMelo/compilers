@@ -1,5 +1,3 @@
-
-
 class Lexemas():
 
     lexema = {
@@ -16,8 +14,8 @@ class Lexemas():
         '*': 'OP_MULTIPLICACAO',
         '/': 'OP_DIVISAO',
 
-        ',': 'SEP_VIRGULA', 
-        '.': 'SEP_PONTO', 
+        ',': 'SEP_VIRGULA',
+        '.': 'SEP_PONTO',
         ';': 'SEP_PONTO_VIRGULA',
         '(': 'SEP_ABRE_PARENTESE',
         ')': 'SEP_FECHA_PARENTESE',

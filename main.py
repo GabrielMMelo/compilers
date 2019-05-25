@@ -1,6 +1,7 @@
 import sys
 import os
 from lexical.analyzer import AnalisadorLexico
+from syntactic.analyzer import AnalisadorSintatico
 
 
 if __name__ == "__main__":
@@ -15,8 +16,11 @@ if __name__ == "__main__":
         print("Número inválido de argumentos. Informe o arquivo de entrada")
         sys.exit()
 
-    analisador = AnalisadorLexico(arquivo)
-    analisador.analisar()
-    analisador.imprimir_tokens()
-    analisador.imprimir_tabela_simbolos()
-    analisador.imprimir_erros()
+    lexico = AnalisadorLexico(arquivo)
+    lexico.analisar()
+    # lexico.imprimir_tokens()
+    # lexico.imprimir_tabela_simbolos()
+    # lexico.imprimir_erros()
+
+    sintatico = AnalisadorSintatico(lexico.tokens)
+    sintatico.analisar()
