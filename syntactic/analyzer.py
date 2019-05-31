@@ -1,5 +1,6 @@
 from lexical.lexeme import Lexemas
 
+
 class AnalisadorSintatico:
     def __init__(self, tokens):
         self.tokens = tokens
@@ -10,19 +11,22 @@ class AnalisadorSintatico:
     def see_actual_token(self):
         return self.tokens[self.actual]
 
-    def move_token_foward(self):
+    def move_token_forward(self):
         self.actual += 1
         if self.actual == len(self.tokens):
             self.success = True
 
+    def move_token_backward(self):
+        self.actual -= 1
+
     def match(self, token):
         try:
             if self.tokens[self.actual].tipo == Lexemas.lexema[token]:
-                self.move_token_foward()
+                self.move_token_forward()
                 return True
         except KeyError:
             if self.tokens[self.actual].tipo == token:  # caso seja um identificador
-                self.move_token_foward()
+                self.move_token_forward()
                 return True
         return False
         # throw a error here!
@@ -339,8 +343,28 @@ class AnalisadorSintatico:
         return False
 
     def num(self):
-        # TODO:
-        pass
+        self.soma()  # é opcional
+        if self.digito():
+            while self.digito():
+                pass
+            self.move_token_backward()
+            if self.match('.'):
+                if self.digito():
+                    while self.digito():
+                        pass
+                    self.move_token_backward()
+                else:
+                    return False
+            if self.match('E'):
+                self.soma()  # é opcional
+                if self.digito():
+                    while self.digito():
+                        pass
+                    self.move_token_backward()
+                else:
+                    return False
+            return True
+        return False
 
     def num_int(self):
         if self.digito():
