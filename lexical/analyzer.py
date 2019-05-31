@@ -86,14 +86,18 @@ class AnalisadorLexico:
                             id = self.tabela_simbolos.add(cadeia)
                             self.tokens.append(Token("IDENTIFICADOR", None, linha, coluna, id))
 
+                # operador de potência
+                elif caracter_atual == 'E':
+                    self.tokens.append(Token(Lexemas.lexema[caracter_atual], caracter_atual, linha, coluna))
+
                 # operadores
-                elif self.e_operador(caracter_atual) or caracter_atual == "!":
+                elif self.e_operador(caracter_atual) or caracter_atual == '!':
                     caracter_seguinte = self.arquivo.ler_caracter()
                     juncao = caracter_atual + caracter_seguinte
                     if self.e_operador(juncao):
                         self.tokens.append(Token(Lexemas.lexema[juncao], juncao, linha, coluna))
                     else:
-                        if caracter_atual == "!":
+                        if caracter_atual == '!':
                             self.panic_mode(caracter_atual)
                             self.erros.append("ERRO: operador inválido. Linha: {}, Coluna: {}".format(linha, coluna))
                         else:
@@ -102,50 +106,13 @@ class AnalisadorLexico:
 
                 # constantes numéricas
                 elif self.e_digito(caracter_atual):
-                    float = False
                     erro = False
-                    exponencial = False
-                    while not caracter_atual == '\n':
-                        if self.e_digito(caracter_atual):
-                            cadeia += caracter_atual
-                            caracter_atual = self.arquivo.ler_caracter()
-                        elif caracter_atual == '.' and not float and not exponencial:  # para evitar que volte ao float
-                            caracter_atual = self.arquivo.ler_caracter()
-                            if self.e_digito(caracter_atual):
-                                cadeia += '.'
-                                float = True
-                            else:
-                                erro = True
-                                break
-                        elif caracter_atual == 'E' and not exponencial:
-                            caracter_atual = self.arquivo.ler_caracter()
-                            if self.e_digito(caracter_atual) or caracter_atual == '+' or caracter_atual == '-':
-                                cadeia += 'E'
-                                exponencial = True
-                                if caracter_atual == '+' or caracter_atual == '-':
-                                    linha_op = self.arquivo.get_linha()
-                                    coluna_op = self.arquivo.get_coluna()
-                                    self.tokens.append(Token(Lexemas.lexema[caracter_atual], caracter_atual, linha_op, coluna_op))
-                            else:
-                                erro = True
-                                break
-                        elif (((self.e_separador(caracter_atual) and caracter_atual != '.') or caracter_atual == ' '
-                                or caracter_atual == '\t') or (self.e_operador(caracter_atual))):
-                            self.arquivo.voltar_caracter()
-                            break
-                        elif not caracter_atual == '\n':
-                            erro = True
-                            break
-                    if erro:
-                        self.panic_mode(caracter_atual)
-                        self.erros.append("ERRO: formato de constante numérica inválido. Linha: {}, Coluna: {}".
-                                          format(linha, coluna))
-                    elif float or exponencial:
-                        id = self.tabela_simbolos.add(cadeia)
-                        self.tokens.append(Token("FLOAT", None, linha, coluna, id))
-                    else:
-                        id = self.tabela_simbolos.add(cadeia)
-                        self.tokens.append(Token("INT", None, linha, coluna, id))
+                    while self.e_digito(caracter_atual):
+                        cadeia += caracter_atual
+                        caracter_atual = self.arquivo.ler_caracter()
+                    self.arquivo.voltar_caracter()
+                    id = self.tabela_simbolos.add(cadeia)
+                    self.tokens.append(Token("INT", None, linha, coluna, id))
 
                 # separadores
                 elif self.e_separador(caracter_atual):

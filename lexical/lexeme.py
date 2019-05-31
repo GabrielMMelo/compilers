@@ -9,6 +9,8 @@ class Lexemas():
         '<=': 'OP_MENOR_IGUAL',
         '!=': 'OP_DIFERENTE',
 
+        'E': 'OP_POTENCIA',
+
         '+': 'OP_SOMA',
         '-': 'OP_SUBTRACAO',
         '*': 'OP_MULTIPLICACAO',

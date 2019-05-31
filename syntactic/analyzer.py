@@ -201,7 +201,7 @@ class AnalisadorSintatico:
             if self.match('('):
                 if self.expressao():
                     if self.match(')'):
-                        if self.commando():
+                        if self.comando():
                             return True
         return False
 
