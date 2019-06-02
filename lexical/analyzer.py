@@ -81,7 +81,7 @@ class AnalisadorLexico:
 
                     if not erro:
                         if self.e_reservada(cadeia):
-                            self.tokens.append(Token("RESERVADA", cadeia, linha, coluna))
+                            self.tokens.append(Token(cadeia.upper(), cadeia, linha, coluna))
                         else:
                             id = self.tabela_simbolos.add(cadeia)
                             self.tokens.append(Token("IDENTIFICADOR", None, linha, coluna, id))
