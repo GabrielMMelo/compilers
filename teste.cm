@@ -4,14 +4,10 @@
 comentario
 comentario
 */
-teste
-131E2+11 123.2{
-<=
-<
-<>
-()
-!
-};,
-123E-23
-$teste
-%#@errado { }
+
+int main()
+{
+   int x;
+   x = 10;
+   return 0;
+}
