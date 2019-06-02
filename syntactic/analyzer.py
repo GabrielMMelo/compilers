@@ -77,15 +77,16 @@ class AnalisadorSintatico:
         return False
 
     def tipo_especificador(self):
-        if self.match('int'):
+        if self.match('INT'):
             return True
-        if self.match('float'):
+        if self.match('FLOAT'):
             return True
-        if self.match('char'):
+        # A descrição do trabalho está incorreta. Não é possível identificar char
+        # if self.match('CHAR'):
+        #    return True
+        if self.match('VOID'):
             return True
-        if self.match('void'):
-            return True
-        if self.match('struct'):
+        if self.match('STRUCT'):
             if self.ident():
                 if self.match('{'):
                     if self.atributos_declaracao():
@@ -113,7 +114,7 @@ class AnalisadorSintatico:
     def params(self):
         if self.param_lista():
             return True
-        if self.match('void'):
+        if self.match('VOID'):
             return True
         return False
 
@@ -184,15 +185,15 @@ class AnalisadorSintatico:
 
     # alterei a ordem das derivações da gramatica p/ rodar
     def selecao_decl(self):
-        if self.match('if'):
+        if self.match('IF'):
             if self.match('('):
                 if self.expressao():
                     if self.match(')'):
                         if self.comando():
-                            if self.match('else'):
+                            if self.match('ELSE'):
                                 if self.comando():
                                     return True
-        if self.match('if'):
+        if self.match('IF'):
             if self.match('('):
                 if self.expressao():
                     if self.match(')'):
@@ -201,7 +202,7 @@ class AnalisadorSintatico:
         return False
 
     def iteracao_decl(self):
-        if self.match('while'):
+        if self.match('WHILE'):
             if self.match('('):
                 if self.expressao():
                     if self.match(')'):
@@ -210,10 +211,10 @@ class AnalisadorSintatico:
         return False
 
     def retorno_decl(self):
-        if self.match('return'):
+        if self.match('RETURN'):
             if self.match(';'):
                 return True
-        if self.match('return'):
+        if self.match('RETURN'):
             if self.expressao():
                 if self.match(';'):
                     return True
@@ -375,17 +376,7 @@ class AnalisadorSintatico:
         return False
 
     def digito(self):
-        # TODO:
-        pass
+        return self.match('INT')
 
     def ident(self):
-        if self.letra():
-            while not self.success:
-                if (not self.letra()) and (not self.digito()):
-                    return False
-            return True
-        return False
-
-    def letra(self):
-        # TODO:
-        pass
+        return self.match('IDENTIFICADOR')
