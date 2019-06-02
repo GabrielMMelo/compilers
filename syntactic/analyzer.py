@@ -41,9 +41,8 @@ class AnalisadorSintatico:
 
     def declaracaoLista(self):
         self.declaracao()
-        while not self.success:
-            if not self.declaracao():
-                return False
+        while self.declaracao():
+            pass
         return True
 
     def declaracao(self):
@@ -65,13 +64,8 @@ class AnalisadorSintatico:
                 if self.match('['):
                     if self.num_int():
                         if self.match(']'):
-                            while not self.success:
-                                if not self.match('['):
-                                    return False
-                                if not self.num_int():
-                                    return False
-                                if not self.match(']'):
-                                    return False
+                            while self.match('[') and self.num_int() and self.match(']'):
+                                pass
                             if self.match(';'):
                                 return True
         return False
@@ -96,9 +90,8 @@ class AnalisadorSintatico:
 
     def atributos_declaracao(self):
         self.var_declaracao()
-        while not self.success:
-            if not self.var_declaracao():
-                return False
+        while self.var_declaracao():
+            pass
         return True
 
     def fun_declaracao(self):
@@ -120,11 +113,8 @@ class AnalisadorSintatico:
 
     def param_lista(self):
         if self.param():
-            while not self.success:
-                if not self.match(','):
-                    return False
-                if not self.param():
-                    return False
+            while self.match(',') and self.param():
+                pass
             return True
         return False
 
@@ -235,13 +225,8 @@ class AnalisadorSintatico:
             if self.match('['):
                 if self.expressao():
                     if self.match(']'):
-                        while not self.success:
-                            if not self.match('['):
-                                return False
-                            if not self.expressao():
-                                return False
-                            if not self.match(']'):
-                                return False
+                        while self.match('[') and self.expressao() and self.match(']'):
+                            pass
                         return True
         if self.ident():
             return True
@@ -273,11 +258,8 @@ class AnalisadorSintatico:
 
     def expressao_soma(self):
         if self.termo():
-            while not self.success:
-                if not self.soma():
-                    return False
-                if not self.termo():
-                    return False
+            while self.soma() and self.termo():
+                pass
             return True
         return False
 
@@ -290,11 +272,8 @@ class AnalisadorSintatico:
 
     def termo(self):
         if self.fator():
-            while not self.success:
-                if not self.mult():
-                    return False
-                if not self.fator():
-                    return False
+            while self.mult() and self.fator():
+                pass
             return True
         return False
 
@@ -335,11 +314,8 @@ class AnalisadorSintatico:
 
     def arg_lista(self):
         if self.expressao():
-            while not self.success:
-                if not self.match(','):
-                    return False
-                if not self.expressao():
-                    return False
+            while self.match(',') and self.expressao():
+                pass
             return True
         return False
 
@@ -369,9 +345,8 @@ class AnalisadorSintatico:
 
     def num_int(self):
         if self.digito():
-            while not self.success:
-                if not self.digito():
-                    return False
+            while self.digito():
+                pass
             return True
         return False
 
