@@ -5,9 +5,11 @@ comentario
 comentario
 */
 
-int main()
+int main(void)
 {
    int x;
+   int y;
    x = 10;
+   y = x * 30 + 90;
    return 0;
 }

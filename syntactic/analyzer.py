@@ -16,8 +16,8 @@ class AnalisadorSintatico:
         if self.actual == len(self.tokens):
             self.success = True
 
-    def move_token_backward(self, number=1):
-        self.actual -= number
+    def move_token_backward(self, number=None):
+        self.actual = number
 
     def match(self, token):
         try:
@@ -32,8 +32,8 @@ class AnalisadorSintatico:
         # throw a error here!
 
     def analisar(self):
-        self.success = self.programa()
-        if self.success:
+        result = self.programa()
+        if result and self.success:
             print("success")
         else:
             print("error")
@@ -50,13 +50,16 @@ class AnalisadorSintatico:
         return False
 
     def declaracao(self):
+        if self.success:
+            return False
+
         # É necessário guardar a possição atual para caso ocorra erro
         # poder voltar os tokens que foram lidos.
         actual_index = self.actual
         if self.var_declaracao():
             return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
 
         if self.fun_declaracao():
             return True
@@ -70,7 +73,7 @@ class AnalisadorSintatico:
                 if self.match(';'):
                     return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         actual_index = self.actual
         if self.tipo_especificador():
             if self.ident():
@@ -82,7 +85,7 @@ class AnalisadorSintatico:
                             if self.match(';'):
                                 return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         return False
 
     def tipo_especificador(self):
@@ -103,7 +106,7 @@ class AnalisadorSintatico:
                         if self.match('}'):
                             return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         return False
 
     def atributos_declaracao(self):
@@ -113,7 +116,7 @@ class AnalisadorSintatico:
                 pass
             return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         return False
 
     def fun_declaracao(self):
@@ -126,7 +129,7 @@ class AnalisadorSintatico:
                             if self.composto_decl():
                                 return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         return False
 
     def params(self):
@@ -134,12 +137,12 @@ class AnalisadorSintatico:
         if self.param_lista():
             return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         actual_index = self.actual
         if self.match('VOID'):
             return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         return False
 
     def param_lista(self):
@@ -151,11 +154,11 @@ class AnalisadorSintatico:
                 notEnd = self.match(',')
                 if notEnd:
                     if not self.param():
-                        self.move_token_backward(self.actual - actual_index)
+                        self.move_token_backward(actual_index)
                         notEnd = False
             return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         return False
 
     # alterei a ordem das derivações da gramatica p/ rodar
@@ -167,13 +170,13 @@ class AnalisadorSintatico:
                     if self.match(']'):
                         return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         actual_index = self.actual
         if self.tipo_especificador():
             if self.ident():
                 return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         return False
 
     def composto_decl(self):
@@ -184,7 +187,7 @@ class AnalisadorSintatico:
                     if self.match('}'):
                         return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         return False
 
     def local_declaracoes(self):
@@ -192,7 +195,7 @@ class AnalisadorSintatico:
         while notEnd:
             actual_index = self.actual
             if not self.var_declaracao():
-                self.move_token_backward(self.actual - actual_index)
+                self.move_token_backward(actual_index)
                 notEnd = False
 
         return True
@@ -202,7 +205,7 @@ class AnalisadorSintatico:
         while notEnd:
             actual_index = self.actual
             if not self.comando():
-                self.move_token_backward(self.actual - actual_index)
+                self.move_token_backward(actual_index)
                 notEnd = False
 
         return True
@@ -212,27 +215,27 @@ class AnalisadorSintatico:
         if self.expressao_decl():
             return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         actual_index = self.actual
         if self.composto_decl():
             return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         actual_index = self.actual
         if self.selecao_decl():
             return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         actual_index = self.actual
         if self.iteracao_decl():
             return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         actual_index = self.actual
         if self.retorno_decl():
             return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         return False
 
     def expressao_decl(self):
@@ -240,12 +243,12 @@ class AnalisadorSintatico:
         if self.expressao():
             if self.match(';'):
                 return True
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         actual_index = self.actual
         if self.match(';'):
             return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         return False
 
     # alterei a ordem das derivações da gramatica p/ rodar
@@ -260,7 +263,7 @@ class AnalisadorSintatico:
                                 if self.comando():
                                     return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         actual_index = self.actual
         if self.match('IF'):
             if self.match('('):
@@ -269,7 +272,7 @@ class AnalisadorSintatico:
                         if self.comando():
                             return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         return False
 
     def iteracao_decl(self):
@@ -281,7 +284,7 @@ class AnalisadorSintatico:
                         if self.comando():
                             return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         return False
 
     def retorno_decl(self):
@@ -290,14 +293,14 @@ class AnalisadorSintatico:
             if self.match(';'):
                 return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         actual_index = self.actual
         if self.match('RETURN'):
             if self.expressao():
                 if self.match(';'):
                     return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         return False
 
     def expressao(self):
@@ -307,12 +310,12 @@ class AnalisadorSintatico:
                 if self.expressao():
                     return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         actual_index = self.actual
         if self.expressao_simples():
             return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         return False
 
     # alterei a ordem das derivações da gramatica p/ rodar
@@ -326,12 +329,12 @@ class AnalisadorSintatico:
                             pass
                         return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         actual_index = self.actual
         if self.ident():
             return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         return False
 
     def expressao_simples(self):
@@ -341,12 +344,12 @@ class AnalisadorSintatico:
                 if self.expressao_soma():
                     return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         actual_index = self.actual
         if self.expressao_soma():
             return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         return False
 
     def relacional(self):
@@ -373,11 +376,11 @@ class AnalisadorSintatico:
                 if notEnd:
                     actual_index = self.actual
                     if not self.termo():
-                        self.move_token_backward(self.actual - actual_index)
+                        self.move_token_backward(actual_index)
                         notEnd = False
             return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         return False
 
     def soma(self):
@@ -396,11 +399,11 @@ class AnalisadorSintatico:
                 if notEnd:
                     actual_index = self.actual
                     if not self.fator():
-                        self.move_token_backward(self.actual - actual_index)
+                        self.move_token_backward(actual_index)
                         notEnd = False
             return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         return False
 
     def mult(self):
@@ -417,27 +420,27 @@ class AnalisadorSintatico:
                 if self.match(')'):
                     return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         actual_index = self.actual
         if self.var():
             return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         actual_index = self.actual
         if self.ativacao():
             return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         actual_index = self.actual
         if self.num():
             return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         actual_index = self.actual
         if self.num_int():
             return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         return False
 
     def ativacao(self):
@@ -448,7 +451,7 @@ class AnalisadorSintatico:
                     if self.match(')'):
                         return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         return False
 
     # derivação opcional apenas
@@ -465,11 +468,11 @@ class AnalisadorSintatico:
                 if notEnd:
                     actual_index = self.actual
                     if not self.expressao():
-                        self.move_token_backward(self.actual - actual_index)
+                        self.move_token_backward(actual_index)
                         notEnd = False
             return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         return False
 
     def num(self):
@@ -485,7 +488,7 @@ class AnalisadorSintatico:
                     return False
             return True
 
-        self.move_token_backward(self.actual - actual_index)
+        self.move_token_backward(actual_index)
         return False
 
     def num_int(self):

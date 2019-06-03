@@ -127,7 +127,9 @@ class AnalisadorLexico:
             self.erros.append(str(e))
 
         except UserWarning as e:
-            pass  # final do arquivo
+            if len(self.erros) == 0:
+                return True
+            return False
 
     def imprimir_tokens(self):
         print("\nTokens (<tipo, valor/id, linha, coluna>):")

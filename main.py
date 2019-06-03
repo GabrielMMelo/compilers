@@ -17,10 +17,14 @@ if __name__ == "__main__":
         sys.exit()
 
     lexico = AnalisadorLexico(arquivo)
-    lexico.analisar()
+    resultado_lexico = lexico.analisar()
     # lexico.imprimir_tokens()
     # lexico.imprimir_tabela_simbolos()
     # lexico.imprimir_erros()
 
-    sintatico = AnalisadorSintatico(lexico.tokens)
-    sintatico.analisar()
+    if resultado_lexico:
+        sintatico = AnalisadorSintatico(lexico.tokens)
+        sintatico.analisar()
+    else:
+        print("Erro(s) léxico!")
+        lexico.imprimir_erros()
