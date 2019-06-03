@@ -32,8 +32,7 @@ class AnalisadorSintatico:
         # throw a error here!
 
     def analisar(self):
-        result = self.programa()
-        if result and self.success:
+        if self.programa():
             print("success")
         else:
             print("error")
@@ -46,7 +45,7 @@ class AnalisadorSintatico:
         if self.declaracao():
             while self.declaracao():
                 pass
-            return (self.actual == len(self.tokens))  # Verifica se leu todos os tokens
+            return self.success # Verifica se leu todos os tokens
         return False
 
     def declaracao(self):
@@ -134,12 +133,12 @@ class AnalisadorSintatico:
 
     def params(self):
         actual_index = self.actual
-        if self.param_lista():
+        if self.match('VOID'):
             return True
 
         self.move_token_backward(actual_index)
         actual_index = self.actual
-        if self.match('VOID'):
+        if self.param_lista():
             return True
 
         self.move_token_backward(actual_index)
