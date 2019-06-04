@@ -8,6 +8,13 @@ class AnalisadorSintatico:
         self.success = False  # indicador da tradução correta
         self.errors = []      # faremos detecção de erros?
 
+    def imprimir_erros(self):
+        if not self.errors:
+            return
+        print("Erros:")
+        for e in self.errors:
+            print(e)
+
     def see_actual_token(self):
         return self.tokens[self.actual]
 
@@ -32,11 +39,7 @@ class AnalisadorSintatico:
         # throw a error here!
 
     def analisar(self):
-        if self.programa():
-            print("success")
-        else:
-            print("error")
-            print("token atual: ", self.actual)
+        return self.programa()
 
     def programa(self):
         return self.declaracaoLista()
@@ -45,7 +48,9 @@ class AnalisadorSintatico:
         if self.declaracao():
             while self.declaracao():
                 pass
-            return self.success # Verifica se leu todos os tokens
+            return self.success  # Verifica se leu todos os tokens
+        self.errors.append("Não foi feita nenhuma declaração. Linha: {}, Coluna: {}".format(
+            self.tokens[self.actual].linha, self.tokens[self.actual].coluna))
         return False
 
     def declaracao(self):
@@ -63,6 +68,8 @@ class AnalisadorSintatico:
         if self.fun_declaracao():
             return True
 
+        self.errors.append("Não foi feita nenhuma declaração de variável ou função. Linha: {}, Coluna: {}".format(
+            self.tokens[actual_index].linha, self.tokens[actual_index].coluna))
         return False
 
     def var_declaracao(self):
@@ -85,6 +92,8 @@ class AnalisadorSintatico:
                                 return True
 
         self.move_token_backward(actual_index)
+        self.errors.append("Variável declarada incorretamente. Linha: {}, Coluna: {}".format(
+            self.tokens[actual_index].linha, self.tokens[actual_index].coluna))
         return False
 
     def tipo_especificador(self):
@@ -106,6 +115,8 @@ class AnalisadorSintatico:
                             return True
 
         self.move_token_backward(actual_index)
+        self.errors.append("Tipo especificador inesperado. Linha: {}, Coluna: {}".format(
+            self.tokens[actual_index].linha, self.tokens[actual_index].coluna))
         return False
 
     def atributos_declaracao(self):
@@ -116,6 +127,8 @@ class AnalisadorSintatico:
             return True
 
         self.move_token_backward(actual_index)
+        self.errors.append("Declaração de atributos inválido. Linha: {}, Coluna: {}".format(
+            self.tokens[actual_index].linha, self.tokens[actual_index].coluna))
         return False
 
     def fun_declaracao(self):
@@ -129,6 +142,8 @@ class AnalisadorSintatico:
                                 return True
 
         self.move_token_backward(actual_index)
+        self.errors.append("Declaração de função inválida. Linha: {}, Coluna: {}".format(
+            self.tokens[actual_index].linha, self.tokens[actual_index].coluna))
         return False
 
     def params(self):
@@ -142,6 +157,8 @@ class AnalisadorSintatico:
             return True
 
         self.move_token_backward(actual_index)
+        self.errors.append("Parâmetros inválidos. Linha: {}, Coluna: {}".format(
+            self.tokens[actual_index].linha, self.tokens[actual_index].coluna))
         return False
 
     def param_lista(self):
@@ -158,6 +175,8 @@ class AnalisadorSintatico:
             return True
 
         self.move_token_backward(actual_index)
+        self.errors.append("Lista de parâmetros inválida. Linha: {}, Coluna: {}".format(
+            self.tokens[actual_index].linha, self.tokens[actual_index].coluna))
         return False
 
     # alterei a ordem das derivações da gramatica p/ rodar
@@ -176,6 +195,8 @@ class AnalisadorSintatico:
                 return True
 
         self.move_token_backward(actual_index)
+        self.errors.append("Parâmetro inválido. Linha: {}, Coluna: {}".format(
+            self.tokens[actual_index].linha, self.tokens[actual_index].coluna))
         return False
 
     def composto_decl(self):
@@ -187,6 +208,8 @@ class AnalisadorSintatico:
                         return True
 
         self.move_token_backward(actual_index)
+        self.errors.append("Declaração inválida. Linha: {}, Coluna: {}".format(
+            self.tokens[actual_index].linha, self.tokens[actual_index].coluna))
         return False
 
     def local_declaracoes(self):
@@ -235,6 +258,8 @@ class AnalisadorSintatico:
             return True
 
         self.move_token_backward(actual_index)
+        self.errors.append("Declaração inválida de comandos. Linha: {}, Coluna: {}".format(
+            self.tokens[actual_index].linha, self.tokens[actual_index].coluna))
         return False
 
     def expressao_decl(self):
@@ -248,6 +273,8 @@ class AnalisadorSintatico:
             return True
 
         self.move_token_backward(actual_index)
+        self.errors.append("Declaração inválida de expressão. Linha: {}, Coluna: {}".format(
+            self.tokens[actual_index].linha, self.tokens[actual_index].coluna))
         return False
 
     # alterei a ordem das derivações da gramatica p/ rodar
@@ -272,6 +299,8 @@ class AnalisadorSintatico:
                             return True
 
         self.move_token_backward(actual_index)
+        self.errors.append("Declaração inválida de condicional. Linha: {}, Coluna: {}".format(
+            self.tokens[actual_index].linha, self.tokens[actual_index].coluna))
         return False
 
     def iteracao_decl(self):
@@ -284,6 +313,8 @@ class AnalisadorSintatico:
                             return True
 
         self.move_token_backward(actual_index)
+        self.errors.append("Declaração inválida de iteração. Linha: {}, Coluna: {}".format(
+            self.tokens[actual_index].linha, self.tokens[actual_index].coluna))
         return False
 
     def retorno_decl(self):
@@ -300,6 +331,8 @@ class AnalisadorSintatico:
                     return True
 
         self.move_token_backward(actual_index)
+        self.errors.append("Declaração inválida de retorno. Linha: {}, Coluna: {}".format(
+            self.tokens[actual_index].linha, self.tokens[actual_index].coluna))
         return False
 
     def expressao(self):
@@ -315,6 +348,8 @@ class AnalisadorSintatico:
             return True
 
         self.move_token_backward(actual_index)
+        self.errors.append("Expressão inválida. Linha: {}, Coluna: {}".format(
+            self.tokens[actual_index].linha, self.tokens[actual_index].coluna))
         return False
 
     # alterei a ordem das derivações da gramatica p/ rodar
@@ -334,6 +369,8 @@ class AnalisadorSintatico:
             return True
 
         self.move_token_backward(actual_index)
+        self.errors.append("Declaração inválida de váriavel. Linha: {}, Coluna: {}".format(
+            self.tokens[actual_index].linha, self.tokens[actual_index].coluna))
         return False
 
     def expressao_simples(self):
@@ -364,6 +401,8 @@ class AnalisadorSintatico:
             return True
         if self.match('!='):
             return True
+        self.errors.append("Declaração inválida de operador lógico. Linha: {}, Coluna: {}".format(
+            self.tokens[self.actual].linha, self.tokens[self.actual].coluna))
         return False
 
     def expressao_soma(self):
@@ -380,6 +419,8 @@ class AnalisadorSintatico:
             return True
 
         self.move_token_backward(actual_index)
+        self.errors.append("Declaração inválida de expressão (+/-). Linha: {}, Coluna: {}".format(
+            self.tokens[actual_index].linha, self.tokens[actual_index].coluna))
         return False
 
     def soma(self):
@@ -387,6 +428,8 @@ class AnalisadorSintatico:
             return True
         if self.match('-'):
             return True
+        self.errors.append("Declaração inválida de operador (+/-). Linha: {}, Coluna: {}".format(
+            self.tokens[self.actual].linha, self.tokens[self.actual].coluna))
         return False
 
     def termo(self):
@@ -403,6 +446,8 @@ class AnalisadorSintatico:
             return True
 
         self.move_token_backward(actual_index)
+        self.errors.append("Declaração inválida de termo. Linha: {}, Coluna: {}".format(
+            self.tokens[actual_index].linha, self.tokens[actual_index].coluna))
         return False
 
     def mult(self):
@@ -410,6 +455,8 @@ class AnalisadorSintatico:
             return True
         if self.match('/'):
             return True
+        self.errors.append("Declaração inválida de operador (*,/). Linha: {}, Coluna: {}".format(
+            self.tokens[self.actual].linha, self.tokens[self.actual].coluna))
         return False
 
     def fator(self):
@@ -488,6 +535,8 @@ class AnalisadorSintatico:
             return True
 
         self.move_token_backward(actual_index)
+        self.errors.append("Declaração inválida de número. Linha: {}, Coluna: {}".format(
+            self.tokens[actual_index].linha, self.tokens[actual_index].coluna))
         return False
 
     def num_int(self):

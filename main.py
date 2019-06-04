@@ -24,7 +24,11 @@ if __name__ == "__main__":
 
     if resultado_lexico:
         sintatico = AnalisadorSintatico(lexico.tokens)
-        sintatico.analisar()
+        if sintatico.analisar():
+            print("Sucesso!")
+        else:
+            print("Erro(s) sintático!")
+            sintatico.imprimir_erros()
     else:
         print("Erro(s) léxico!")
         lexico.imprimir_erros()
