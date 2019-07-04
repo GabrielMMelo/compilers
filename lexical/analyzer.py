@@ -136,10 +136,6 @@ class AnalisadorLexico:
         for t in self.tokens:
             print(t)
 
-    def imprimir_tabela_simbolos(self):
-        print("\nTabela de Simbolos:")
-        print(self.tabela_simbolos)
-
     def imprimir_erros(self):
         if not self.erros:
             return

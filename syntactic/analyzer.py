@@ -7,6 +7,7 @@ class AnalisadorSintatico:
         self.actual = 0       # posição da lista de tokens
         self.success = False  # indicador da tradução correta
         self.errors = []      # faremos detecção de erros?
+        self.expressions = []
 
     def imprimir_erros(self):
         if not self.errors:
@@ -340,6 +341,7 @@ class AnalisadorSintatico:
         if self.var():
             if self.match('='):
                 if self.expressao():
+                    self.expressions.append(actual_index)
                     return True
 
         self.move_token_backward(actual_index)

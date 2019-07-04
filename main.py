@@ -2,6 +2,7 @@ import sys
 import os
 from lexical.analyzer import AnalisadorLexico
 from syntactic.analyzer import AnalisadorSintatico
+from three_address_code.converter import Conversor
 
 
 if __name__ == "__main__":
@@ -19,13 +20,17 @@ if __name__ == "__main__":
     lexico = AnalisadorLexico(arquivo)
     resultado_lexico = lexico.analisar()
     # lexico.imprimir_tokens()
-    # lexico.imprimir_tabela_simbolos()
+    # print(lexico.tabela_simbolos)
     # lexico.imprimir_erros()
 
     if resultado_lexico:
         sintatico = AnalisadorSintatico(lexico.tokens)
         if sintatico.analisar():
-            print("Sucesso!")
+            # print("Sucesso!")
+            three_adress_code = Conversor(lexico.tokens, sintatico.expressions, lexico.tabela_simbolos)
+            three_adress_code.convert()
+            print(three_adress_code.table_symbols)
+            print(three_adress_code.table)
         else:
             print("Erro(s) sintático!")
             sintatico.imprimir_erros()
