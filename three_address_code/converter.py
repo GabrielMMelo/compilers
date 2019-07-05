@@ -34,6 +34,8 @@ class Conversor:
             name_temp = '_temp'
             pos = e
             while token.tipo != Lexemas.lexema[';']:
+                print(self.__search(pos))
+                print (' ')
                 if last_var:
                     arg1 = last_var
                     operator = token.tipo
@@ -54,3 +56,16 @@ class Conversor:
                 i += 1
             self.table.update_last(identifier.indiceTabelaSimbolo)
             self.table_symbols.remove_last()
+    def __search(self, pos_atual):
+        busca = True
+        while busca:
+            if self.tokens[pos_atual].tipo == (Lexemas.lexema['*'] or Lexemas.lexema['/']):
+                busca = False
+                return pos_atual
+            elif self.tokens[pos_atual].tipo == Lexemas.lexema[';']:
+                busca = False
+                return
+            else:
+                pos_atual += 2
+
+
