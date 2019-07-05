@@ -37,12 +37,12 @@ class Conversor:
                 if last_var:
                     arg1 = last_var
                     operator = token.tipo
-                    arg2 = token.indiceTabelaSimbolo
+                    arg2 = self.tokens[pos + 1].indiceTabelaSimbolo
                     pos += 2
                 else:
                     arg1 = token.indiceTabelaSimbolo
-                    operator = token.tipo
-                    arg2 = token.indiceTabelaSimbolo
+                    operator = self.tokens[pos + 1].tipo
+                    arg2 = self.tokens[pos + 2].indiceTabelaSimbolo
                     pos += 3
 
                 result = name_temp + str(i)
